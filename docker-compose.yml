@@ -25,9 +25,12 @@ services:
       dockerfile: Dockerfile.dev
     container_name: fastapi-backend
     restart: always
+    env_file:
+      - .env
     environment:
       DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@db:5432/${POSTGRES_DB:-fastapi_db}
       PYTHONPATH: /app
+      BACKEND_CORS_ORIGINS: '["http://localhost:3000","http://localhost:${FRONTEND_PORT:-3000}","http://frontend:3000"]'
     ports:
       - "${BACKEND_PORT:-8000}:8000"
     volumes:
@@ -46,6 +49,8 @@ services:
       dockerfile: Dockerfile.dev
     container_name: fastapi-frontend
     restart: always
+    env_file:
+      - .env
     environment:
       NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:8000}
     ports:

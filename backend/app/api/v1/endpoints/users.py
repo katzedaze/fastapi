@@ -75,7 +75,7 @@ async def read_user(
         raise HTTPException(status_code=404, detail="User not found")
 
     # Check permissions
-    if current_user.id != user_id and current_user.role != UserRole.ADMIN:
+    if current_user.id != user_id and current_user.role != UserRole.admin:
         # Return basic info only
         return UserPublic.model_validate(user)
 
@@ -94,11 +94,11 @@ async def update_user(
         raise HTTPException(status_code=404, detail="User not found")
 
     # Check permissions
-    if current_user.id != user_id and current_user.role != UserRole.ADMIN:
+    if current_user.id != user_id and current_user.role != UserRole.admin:
         raise HTTPException(status_code=403, detail="Not enough permissions")
 
     # Only admin can change roles
-    if user_update.role and current_user.role != UserRole.ADMIN:
+    if user_update.role and current_user.role != UserRole.admin:
         raise HTTPException(
             status_code=403, detail="Only admin can change user roles")
 
